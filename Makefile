@@ -10,9 +10,11 @@ build_local: ## Build local env using vagrant and playing local playbook
 	@vagrant up
 	@ansible-playbook -i inventories/local -e env_name=local local_deploy.yml
 
+.PHONY: destroy_local
 destroy_local: ## Destroy the local env
 	@vagrant destroy
 
+.PHONY: lint
 lint: ## Ansible lint
 ifneq ($(strip $(playbook)),)
 				@ansible-lint ./$(playbook)
