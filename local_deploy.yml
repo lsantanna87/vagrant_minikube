@@ -1,0 +1,9 @@
+---
+- hosts: local
+  vars:
+    rolename: "local_dev"
+  roles:
+    - virtualbox
+    - docker-ce
+    - kubectl
+    - minikube

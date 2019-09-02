@@ -1,0 +1,57 @@
+# VirtualBox
+- name: apt-get update
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Create a directory if it does not exist
+  become: yes
+  file:
+    path: /root/app
+    state: directory
+    mode: '0755'
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Install the dependencies needed to run VirtualBox
+  become: yes
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - libqt5opengl5
+      - libqt5printsupport5
+      - libqt5x11extras5
+      - libsdl1.2debian
+      - libsdl-ttf2.0-0
+      - libopus0
+      - libcurl4
+      - libvpx5
+      - libxmu6
+      - dkms
+      - psmisc
+      - apt-transport-https
+
+- name: Download VirtualBox
+  become: yes
+  get_url:
+    url: https://download.virtualbox.org/virtualbox/6.0.10/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb
+    dest: /root/app/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb
+    mode: 0440
+
+- name: Install VirtualBox
+  become: yes
+  shell: "dpkg -i /root/app/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb"
+  args:
+    chdir: /root/app
+  register: install_virtualbox
+
+- name: Debug install_virtualbox
+  debug:
+    var: install_virtualbox
+
+

@@ -1,0 +1,7 @@
+invoke>=0.13.0
+awscli
+ansible==2.8.3
+boto
+boto3
+passlib==1.7.1
+ansible-lint

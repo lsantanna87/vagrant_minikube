@@ -1,0 +1,27 @@
+# Kubectl
+- name: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  become: yes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add a line to a file if it does not exist, without passing regexp
+  become: yes
+  lineinfile:
+    create: yes
+    path: /etc/apt/sources.list.d/kubernetes.list
+    line: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+
+- name: apt-get update
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install packages
+  become: yes
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - kubectl
