@@ -1,7 +1,10 @@
 # vagrant_minikube
 Setup minikube in a VM with ansible, and vagrant
 
-### Steps:
+##### requires python and pip > 3, and latest vagrant
+
+
+## Steps:
 ```$ make prepare```
 
 ```$ make build_local ```
