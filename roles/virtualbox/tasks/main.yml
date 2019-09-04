@@ -3,20 +3,11 @@
   become: yes
   apt:
     update_cache: yes
+  tags:
+    - virtualbox
+    - virtualbox.apt_update
 
-- name: Create a directory if it does not exist
-  become: yes
-  file:
-    path: /root/app
-    state: directory
-    mode: '0755'
-
-- name: Ensure a locale exists
-  locale_gen:
-    name: en_US.UTF-8
-    state: present
-
-- name: Install the dependencies needed to run VirtualBox
+- name: Install VirtualBox dependencies
   become: yes
   apt:
     name: "{{ packages }}"
@@ -35,6 +26,28 @@
       - dkms
       - psmisc
       - apt-transport-https
+  tags:
+    - virtualbox
+    - virtualbox.install_deps
+
+- name: Create a directory if it does not exist
+  become: yes
+  file:
+    path: /root/app
+    state: directory
+    mode: '0755'
+  tags:
+    - virtualbox
+    - virtualbox.mkdir
+
+- name: Ensure a locale exists
+  become: yes
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+  tags:
+    - virtualbox
+    - virtualbox.locale
 
 - name: Download VirtualBox
   become: yes
@@ -42,16 +55,17 @@
     url: https://download.virtualbox.org/virtualbox/6.0.10/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb
     dest: /root/app/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb
     mode: 0440
+  tags:
+    - virtualbox
+    - virtualbox.download_virtualbox
 
 - name: Install VirtualBox
   become: yes
-  shell: "dpkg -i /root/app/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb"
+  command: "dpkg -i /root/app/virtualbox-6.0_6.0.10-132072~Ubuntu~bionic_amd64.deb"
   args:
     chdir: /root/app
   register: install_virtualbox
-
-- name: Debug install_virtualbox
-  debug:
-    var: install_virtualbox
-
-
+  changed_when: False
+  tags:
+    - virtualbox
+    - virtualbox.install_virtualbox

@@ -4,49 +4,35 @@
     path: /root/app
     state: directory
     mode: '0700'
+  tags:
+    - minikube
+    - minikube.mkdir
 
 - name: Download Minikube
   become: yes
   get_url:
     url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     dest: /root/app/minikube-linux-amd64
-    mode: 0440
+    mode: 0644
+  tags:
+    - minikube
+    - minikube.download
 
-- name: Install Minikube
+- name: Copy Minikube
   become: yes
   copy:
     src: /root/app/minikube-linux-amd64
     dest: /usr/local/bin/minikube
     remote_src: true
-    mode: '0644'
+    mode: '0777'
+  tags:
+    - minikube
+    - minikube.copy
 
-#
 - name: Start minikube
-  command: minikube start --vm-driver=none
   become: yes
+  command: minikube start --vm-driver=none  --extra-config=apiserver.service-node-port-range=80-30000
   changed_when: False
-
-#- name: Debug kubectl_cluster_info
-#  become: yes
-#  debug:
-#    var: kubectl_cluster_info
-#
-#- name: Stop minikube
-#  become: yes
-#  shell: "minikube stop"
-#  register: stop_minikube
-#
-#- name: Debug stop_minikube
-#  become: yes
-#  debug:
-#    var: stop_minikube
-#
-#- name: Delete minikube
-#  shell: "minikube delete"
-#  become: yes
-#  register: delete_minikube
-#
-#- name: Debug delete_minikube
-#  become: yes
-#  debug:
-#    var: delete_minikube
+  tags:
+    - minikube
+    - minikube.start

@@ -1,4 +1,5 @@
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
+.ONESHELL:
 
 .PHONY: help
 help:
@@ -8,7 +9,13 @@ help:
 build_local: ## Build local env using vagrant and playing local playbook
 	@$(MAKE) -f $(THIS_FILE) lint playbook=local_deploy.yml
 	@vagrant up
-	@ansible-playbook -i inventories/local -e env_name=local local_deploy.yml
+	@ansible-playbook -i inventories/local -e env_name=local local_deploy.yml -vvv
+
+.PHONY: prepare
+prepare: ## install all the dependencies
+	@python3 -m venv env && \
+					source env/bin/activate && \
+					pip3 install -r requirements.txt
 
 .PHONY: destroy_local
 destroy_local: ## Destroy the local env

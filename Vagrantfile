@@ -20,6 +20,7 @@ Vagrant.configure(2) do |config|
       node.vm.hostname = machine[:hostname]
       node.vm.network 'private_network', ip: machine[:ip]
       node.vm.network "forwarded_port", guest: 8001, host: 8001
+      node.vm.network "forwarded_port", guest: 8443, host: 8443
       node.vm.provision 'shell', inline: 'sudo mkdir -p /home/ubuntu/.ssh/'
       node.vm.synced_folder '~/.ssh', '/home/ubuntu/keys'
       node.vm.provision 'shell', inline: 'sudo cat /home/ubuntu/keys/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys'

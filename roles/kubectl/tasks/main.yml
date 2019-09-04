@@ -4,18 +4,27 @@
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
+  tags:
+    - kubectl
+    - kubectl.add_repo
 
-- name: Add a line to a file if it does not exist, without passing regexp
+- name: add Kubernets repo to apt_repository
   become: yes
   lineinfile:
     create: yes
     path: /etc/apt/sources.list.d/kubernetes.list
     line: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+  tags:
+    - kubectl
+    - kubectl.add_repo
 
 - name: apt-get update
   become: yes
   apt:
     update_cache: yes
+  tags:
+    - kubectl
+    - kubectl.add_repo
 
 - name: Install packages
   become: yes
@@ -25,3 +34,6 @@
   vars:
     packages:
       - kubectl
+  tags:
+    - minikube
+    - minikube.install

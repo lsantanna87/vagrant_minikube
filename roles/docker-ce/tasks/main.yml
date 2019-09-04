@@ -1,48 +1,48 @@
 ---
 - name: Install required packages
+  become: yes
   apt:
     name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common']
     state: present
     update_cache: yes
-  become: yes
   tags:
     - dockerce
     - dockerce.required_packages
 
 - name: Install signing key
+  become: yes
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-  become: yes
   tags:
     - dockerce
     - dockerce.signing_key
 
 - name: Add the repo
+  become: yes
   apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
     state: present
-  become: yes
   tags:
     - dockerce
     - dockerce.docker_repo
 
 - name: Install Docker
+  become: yes
   apt:
     name: docker-ce
     state: present
     update_cache: yes
-  become: yes
   tags:
     - dockerce
     - dockerce.install_docker
 
 - name: adding user ubuntu to group docker
+  become: yes
   user:
     name: ubuntu
     groups: docker
     append: yes
-  become: yes
   tags:
     - dockerce
     - dockerce.add_ubuntu_to_docker

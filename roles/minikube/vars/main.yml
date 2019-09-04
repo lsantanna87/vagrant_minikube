@@ -1,4 +1,0 @@
----
-minikube_default_version: '0.28.2'
-minikube_release_api_url: https://api.github.com/repos/kubernetes/minikube/releases/latest
-minikube_base_url: https://storage.googleapis.com/minikube/releases
