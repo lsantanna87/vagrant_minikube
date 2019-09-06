@@ -1,0 +1,4 @@
+apiVersion: {{ kube_namespace_version }}
+kind: Namespace
+metadata:
+  name: {{ kube_namespace }}

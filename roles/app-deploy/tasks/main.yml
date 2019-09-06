@@ -1,0 +1,8 @@
+- name: build and deploy
+  include_tasks: "{{ item }}"
+  with_items:
+    - build.yml
+    - microservice.yml
+  tags:
+    - app-deploy
+    - app-deploy.main

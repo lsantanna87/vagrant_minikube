@@ -1,0 +1,12 @@
+- name: Clone microservice git repo
+  become: yes
+  git:
+    repo: "{{ microservice_repo }}"
+    dest: "/root/app/microservice/{{ microservice_name }}"
+    version: "{{ microservice_version }}"
+
+- name: Run ci target as root
+  become: yes
+  make:
+    chdir: "/root/app/microservice/{{ microservice_name }}"
+    target: build

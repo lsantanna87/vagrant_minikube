@@ -1,0 +1,17 @@
+apiVersion: {{ kube_service_version }}
+kind: Service
+metadata:
+  name: {{ microservice_name }}
+  namespace: {{ kube_namespace }}
+  labels:
+    run: {{ microservice_name }}
+spec:
+  type: NodePort
+  ports:
+  - port: {{ microservice_external_port }}
+    targetPort: {{ microservice_port }}
+    nodePort: {{ microservice_external_port }}
+    protocol: TCP
+    name: http
+  selector:
+    run: {{ microservice_name }}

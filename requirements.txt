@@ -5,3 +5,5 @@ boto
 boto3
 passlib==1.7.1
 ansible-lint
+openshift
+PyYAML

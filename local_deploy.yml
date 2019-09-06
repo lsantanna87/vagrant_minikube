@@ -3,7 +3,9 @@
   vars:
     rolename: "local_dev"
   roles:
+    - python
     - virtualbox
     - docker-ce
     - kubectl
     - minikube
+    - app-deploy

@@ -1,0 +1,69 @@
+- name: Create a directory if it does not exist
+  become: yes
+  file:
+    path: /root/app/k8s
+    state: directory
+    mode: '0755'
+  tags:
+    - app_deploy
+    - app_deploy.mkdir
+
+- name: copy namespace.yml
+  become: yes
+  template:
+    src: namespace.yml
+    dest: /root/app/k8s
+    owner: root
+    group: root
+  tags:
+    - app_deploy
+    - app_deploy.copy_config
+
+- name: copy service.yml
+  become: yes
+  template:
+    src: service.yml
+    dest: /root/app/k8s
+    owner: root
+    group: root
+  tags:
+    - app_deploy
+    - app_deploy.copy_config
+
+- name: copy deployment.yml
+  become: yes
+  template:
+    src: deployment.yml
+    dest: /root/app/k8s
+    owner: root
+    group: root
+  tags:
+    - app_deploy
+    - app_deploy.copy_config
+
+- name: apply namespace.yml
+  become: yes
+  k8s:
+    state: present
+    src: /root/app/k8s/namespace.yml
+  tags:
+    - app_deploy
+    - app_deploy.namespace_yml
+
+- name: apply service.yml
+  become: yes
+  k8s:
+    state: present
+    src: /root/app/k8s/service.yml
+  tags:
+    - app_deploy
+    - app_deploy.service_yml
+
+- name: Apply deployment.yml
+  become: yes
+  k8s:
+    state: present
+    src: /root/app/k8s/deployment.yml
+  tags:
+    - app_deploy
+    - app_deploy.deployment_yml

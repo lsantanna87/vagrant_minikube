@@ -7,9 +7,10 @@ help:
 
 .PHONY: build_local
 build_local: ## Build local env using vagrant and playing local playbook
+	@$(MAKE) -f $(THIS_FILE) prepare
 	@$(MAKE) -f $(THIS_FILE) lint playbook=local_deploy.yml
 	@vagrant up
-	@ansible-playbook -i inventories/local -e env_name=local local_deploy.yml -vvv
+	@ansible-playbook -i inventories/local -e env_name=local local_deploy.yml
 
 .PHONY: prepare
 prepare: ## install all the dependencies

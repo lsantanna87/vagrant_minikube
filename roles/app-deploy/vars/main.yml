@@ -1,0 +1,13 @@
+---
+kube_namespace: dev
+kube_namespace_version: v1
+kube_service_version: v1
+kube_deployment_version: apps/v1
+microservice_docker_image: gosay:latest
+microservice_name: gosay
+microservice_port: 8080
+microservice_external_port: 80
+microservice_replicas: 2
+microservice_repo: https://github.com/lsantanna87/gosay
+microservice_version: master
+microservice_image_pull_police: Never

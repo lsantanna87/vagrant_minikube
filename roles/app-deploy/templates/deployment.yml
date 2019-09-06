@@ -1,0 +1,21 @@
+apiVersion: {{ kube_deployment_version }}
+kind: Deployment
+metadata:
+  namespace: {{ kube_namespace }}
+  name: {{ microservice_name }}
+spec:
+  selector:
+    matchLabels:
+      run: {{ microservice_name }}
+  replicas: {{ microservice_replicas }}
+  template:
+    metadata:
+      labels:
+        run: {{ microservice_name }}
+    spec:
+      containers:
+      - name: {{ microservice_name }}
+        image: {{ microservice_docker_image }}
+        imagePullPolicy: {{ microservice_image_pull_police }}
+        ports:
+        - containerPort: {{ microservice_port }}
