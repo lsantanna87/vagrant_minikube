@@ -35,5 +35,5 @@
     packages:
       - kubectl
   tags:
-    - minikube
-    - minikube.install
+    - kubectl
+    - kubectl.install
