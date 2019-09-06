@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: False
+  vars_files:
+    - group_vars/{{env_name}}.yml
+  roles:
+    - python
+    - virtualbox
+    - docker-ce
+    - kubectl
+    - minikube
+    - app-deploy
+  post_tasks:
+    - name: Upgrade all packages
+      apt: >
+        upgrade=dist
+        update_cache=yes
+      become: yes
+      tags:
+        - upgrade

@@ -12,6 +12,16 @@ build_local: ## Build local env using vagrant and playing local playbook
 	@vagrant up
 	@ansible-playbook -i inventories/local -e env_name=local local_deploy.yml
 
+
+.PHONY: deploy
+deploy: ## deploy to a real env
+ifneq ($(strip $(env)),)
+				@$(MAKE) -f $(THIS_FILE) prepare
+				@ansible-playbook -i inventories/$(env) -e env_name=$(env) deploy.yml
+else
+	@echo "env is required!"
+endif
+
 .PHONY: prepare
 prepare: ## install all the dependencies
 	@python3 -m venv env && \
