@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+import os
+import argparse
+import json
+
+
+class CreateInventory(object):
+    def __init__(self):
+        self.inventory = {}
+        self.read_cli_args()
+
+        if self.args.list:
+            self.inventory = self.create()
+        else:
+            self.inventory = self.empty_inventory()
+
+        print(json.dumps(self.inventory))
+
+    def get_host(self, data):
+        return [data["Reservations"][0]["Instances"][0]["PublicIpAddress"]]
+
+    def get_user(self):
+        return "ubuntu"
+
+    def get_ssh_path(self):
+        return os.getcwd() + "/inventories/ssh/prod.pem"
+
+    def get_json_path(self):
+        return os.getcwd() + "/inventories/prod.json"
+
+    def parse_file(self):
+        inventory = {}
+        with open(self.get_json_path()) as json_file:
+            data = json.load(json_file)
+            inventory["hosts"] = self.get_host(data)
+            inventory["user"] = self.get_user()
+            inventory["ssh_path"] = self.get_ssh_path()
+            return inventory
+
+    def create(self):
+        data = self.parse_file()
+        return {
+            'group': {
+                'hosts': data['hosts'],
+                'vars': {
+                    'ansible_ssh_user': data["user"],
+                    'ansible_ssh_private_key_file': data["ssh_path"]
+                }
+            },
+            '_meta': {
+                'hostvars': {}
+            }
+        }
+
+    def empty_inventory(self):
+        return {'_meta': {'hostvars': {}}}
+
+    def read_cli_args(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--list', action='store_true')
+        parser.add_argument('--host', action='store')
+        self.args = parser.parse_args()
+
+
+CreateInventory()
