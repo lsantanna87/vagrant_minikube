@@ -5,7 +5,7 @@
     dest: "/root/app/microservice/{{ microservice_name }}"
     version: "{{ microservice_version }}"
 
-- name: Run ci target as root
+- name: Run build target
   become: yes
   make:
     chdir: "/root/app/microservice/{{ microservice_name }}"
